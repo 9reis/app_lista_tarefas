@@ -35,7 +35,16 @@ class TodoListPage extends StatelessWidget {
               SizedBox(height: 16),
               ListView(
                 shrinkWrap: true,
-                children: [],
+                children: [
+                  ListTile(
+                    title: Text("Tarefa 1"),
+                    subtitle: Text("21/21/21"),
+                    leading: Icon(Icons.person, size: 30),
+                    onTap: () {
+                      print("Tarefa 1");
+                    },
+                  )
+                ],
               ),
               SizedBox(height: 16),
               Row(
