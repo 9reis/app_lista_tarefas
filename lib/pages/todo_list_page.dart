@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
-class TodoListPage extends StatelessWidget {
-  const TodoListPage({super.key});
+class TodoListPage extends StatefulWidget {
+  TodoListPage({super.key});
+
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  final TextEditingController todoController = TextEditingController();
+
+  List<String> todos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +25,7 @@ class TodoListPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: todoController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Adicione uma tarefa",
@@ -24,7 +34,13 @@ class TodoListPage extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String text = todoController.text;
+                      setState(() {
+                        todos.add(text);
+                      });
+                      todoController.clear();
+                    },
                     style: ElevatedButton.styleFrom(
                         primary: Color(0xFF00D7F3),
                         padding: const EdgeInsets.all(17)),
@@ -33,18 +49,21 @@ class TodoListPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  ListTile(
-                    title: Text("Tarefa 1"),
-                    subtitle: Text("21/21/21"),
-                    leading: Icon(Icons.person, size: 30),
-                    onTap: () {
-                      print("Tarefa 1");
-                    },
-                  )
-                ],
+              Flexible(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    for (String todo in todos)
+                      ListTile(
+                        title: Text(todo),
+                        subtitle: Text("21/21/21"),
+                        leading: Icon(Icons.person, size: 30),
+                        onTap: () {
+                          print("Tarefa $todo");
+                        },
+                      )
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               Row(
