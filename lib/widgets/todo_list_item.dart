@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import 'package:flutter/material.dart';
-
 class TodoListItem extends StatelessWidget {
-  const TodoListItem({super.key});
+  TodoListItem({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,14 @@ class TodoListItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: Colors.grey[200],
       ),
+      margin: const EdgeInsets.symmetric(vertical: 3),
       padding: EdgeInsets.all(16),
-      child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text("data - hora",
             style: TextStyle(
               fontSize: 12,
             )),
-        Text("tarefa",
+        Text(title,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
