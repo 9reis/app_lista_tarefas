@@ -16,8 +16,19 @@ class _TodoListPageState extends State<TodoListPage> {
   final TodoRepository todoRepository = TodoRepository();
 
   List<Todo> todos = [];
+
   Todo? deletedTodo;
   int? deletedTodoPos;
+
+  @override
+  void initState() {
+    super.initState();
+    todoRepository.getTodoList().then((value) {
+      setState(() {
+        todos = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +117,7 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.remove(todo);
     });
+    todoRepository.saveTodoList(todos);
 
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -125,6 +137,7 @@ class _TodoListPageState extends State<TodoListPage> {
             setState(() {
               todos.insert(deletedTodoPos!, deletedTodo!);
             });
+            todoRepository.saveTodoList(todos);
           }),
         ),
         duration: const Duration(seconds: 5),
@@ -168,5 +181,6 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.clear();
     });
+    todoRepository.saveTodoList(todos);
   }
 }
