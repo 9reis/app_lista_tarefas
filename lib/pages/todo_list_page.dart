@@ -20,6 +20,8 @@ class _TodoListPageState extends State<TodoListPage> {
   Todo? deletedTodo;
   int? deletedTodoPos;
 
+  String? errorText;
+
   @override
   void initState() {
     super.initState();
@@ -46,21 +48,41 @@ class _TodoListPageState extends State<TodoListPage> {
                       child: TextField(
                         controller: todoController,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Adicione uma tarefa",
-                            hintText: "ex: Estudar flutter"),
+                          border: OutlineInputBorder(),
+                          labelText: "Adicione uma tarefa",
+                          hintText: "ex: Estudar flutter",
+                          errorText: errorText,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF00D7F3),
+                              width: 2,
+                            ),
+                          ),
+                          labelStyle: TextStyle(
+                            color: Color(0xFF00D7F3),
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: () {
                         String text = todoController.text;
+
+                        if (text.isEmpty) {
+                          setState(() {
+                            errorText = "O titulo não pode ser vazio";
+                          });
+                          return;
+                        }
+
                         setState(() {
                           Todo newTodo = Todo(
                             title: text,
                             dateTime: DateTime.now(),
                           );
                           todos.add(newTodo);
+                          errorText = null;
                         });
                         todoController.clear();
                         todoRepository.saveTodoList(todos);
